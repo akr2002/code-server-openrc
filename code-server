@@ -1,0 +1,39 @@
+name=$RC_SVCNAME
+description="$name - VS Code on a remote server"
+user="" # your username here
+homedir="/home/$user"
+command="$(which code-server)"
+# Just because you can do this does not mean you should. Use ~/.config/code-server/config.yaml instead
+#command_args="--extensions-dir $homedir/.local/share/$name/extensions --user-data-dir $homedir/.local/share/$name --disable-telemetry"
+command_user="$user:$user"
+pidfile="/run/$name/$name.pid"
+command_background="yes"
+extra_commands="report"
+
+depend() {
+	use logger dns
+	need net
+}
+
+start_pre() {
+	checkpath --directory --owner $command_user --mode 0755 /run/$name /var/log/$name
+}
+
+start() {
+	default_start
+	report
+}
+
+stop() {
+	default_stop
+}
+
+status() {
+	default_status
+	report
+}
+
+report() {
+	# Report to the user
+	einfo "Reading configuration from ~/.config/code-server/config.yaml"
+}
