@@ -1,3 +1,4 @@
+#!/sbin/openrc-run
 name=$RC_SVCNAME
 description="$name - VS Code on a remote server"
 user="" # your username here
